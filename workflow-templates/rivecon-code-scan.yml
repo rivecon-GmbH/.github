@@ -1,0 +1,20 @@
+name: Code-Scan
+
+# Rein informativer Scan (Bandit, pylint-odoo, Ruff, gitleaks). Blockiert nichts.
+# Hinweis: odoo-version auf die Version des Repos setzen (19.0 oder 20.0).
+
+on:
+  push:
+    branches: [$default-branch, stage]
+    paths: ["**.py", "**.xml", "**.js", "requirements.txt", ".github/workflows/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    uses: rivecon-GmbH/.github/.github/workflows/odoo-code-scan.yml@main
+    with:
+      odoo-version: "19.0"

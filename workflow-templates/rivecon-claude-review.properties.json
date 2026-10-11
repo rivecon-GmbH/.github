@@ -1,0 +1,7 @@
+{
+  "name": "rivecon Claude-Review",
+  "description": "Automatisches Review von Pull Requests durch Claude (deutsch, Odoo-Fokus) und Antworten auf @claude. Schreibt nur Kommentare.",
+  "iconName": "octicon comment-discussion",
+  "categories": ["Code review"],
+  "filePatterns": ["__manifest__.py$"]
+}

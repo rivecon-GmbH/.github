@@ -1,0 +1,7 @@
+{
+  "name": "rivecon Code-Scan",
+  "description": "Informativer Code-Scan fuer Odoo-Repos: Bandit, pylint-odoo, Ruff und gitleaks. Blockiert keine Builds oder Merges.",
+  "iconName": "octicon shield-check",
+  "categories": ["Code scanning", "Python"],
+  "filePatterns": ["__manifest__.py$"]
+}

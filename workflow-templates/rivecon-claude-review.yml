@@ -1,0 +1,24 @@
+name: Claude-Review
+
+# Automatisches Review bei Pull Requests (Draft-PRs werden uebersprungen) und
+# Antworten auf Kommentare mit "@claude". Claude schreibt nur Kommentare.
+# Benoetigt das Secret ANTHROPIC_API_KEY (Organisations- oder Repo-Secret).
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  claude:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    uses: rivecon-GmbH/.github/.github/workflows/claude-review.yml@main
+    secrets:
+      anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
