@@ -1,0 +1,14 @@
+name: Selbsttest Code-Scan
+
+# Manueller Test des zentralen Workflows gegen selftest/sample.py.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    uses: ./.github/workflows/odoo-code-scan.yml
+    with:
+      odoo-version: "19.0"
