@@ -16,14 +16,24 @@ on:
         default: ""
     secrets:
       anthropic_api_key:
-        description: Anthropic-API-Key (Organisations- oder Repo-Secret ANTHROPIC_API_KEY)
-        required: true
+        description: Optional. Ohne Key authentifiziert sich der Lauf per Workload Identity Federation.
+        required: false
 
 permissions:
   contents: read
   pull-requests: write
   issues: write
   id-token: write
+
+# Authentifizierung per Workload Identity Federation (kein API-Key noetig).
+# Die IDs sind Kennungen, keine Zugangsdaten. Die Regel wird nach Repo-Eigentuemer gewaehlt:
+# die Anthropic-Regeln akzeptieren nur Tokens aus genau diesem Workflow.
+env:
+  ANTHROPIC_ORG_ID: 5ddc1403-d2ad-4d3c-aaf1-4caa1cff4412
+  ANTHROPIC_SERVICE_ACCOUNT_ID: svac_01PZRjDvWj16L4nEgdKCDNu8
+  ANTHROPIC_WORKSPACE_ID: wrkspc_01EUQ2PzVbZsYaHghdt9a7te
+  RULE_ID_ORG: fdrl_01NCEtv42YoyrAc1ktmLk9rZ
+  RULE_ID_PERSONAL: TODO_PERSOENLICHE_REGEL
 
 jobs:
   review:
@@ -42,6 +52,10 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.anthropic_api_key }}
+          anthropic_federation_rule_id: ${{ github.repository_owner == 'rivecon-GmbH' && env.RULE_ID_ORG || env.RULE_ID_PERSONAL }}
+          anthropic_organization_id: ${{ env.ANTHROPIC_ORG_ID }}
+          anthropic_service_account_id: ${{ env.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          anthropic_workspace_id: ${{ env.ANTHROPIC_WORKSPACE_ID }}
           track_progress: true
           claude_args: >-
             ${{ inputs.model != '' && format('--model {0} ', inputs.model) || '' }}--allowedTools
@@ -96,6 +110,10 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.anthropic_api_key }}
+          anthropic_federation_rule_id: ${{ github.repository_owner == 'rivecon-GmbH' && env.RULE_ID_ORG || env.RULE_ID_PERSONAL }}
+          anthropic_organization_id: ${{ env.ANTHROPIC_ORG_ID }}
+          anthropic_service_account_id: ${{ env.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          anthropic_workspace_id: ${{ env.ANTHROPIC_WORKSPACE_ID }}
           claude_args: >-
             ${{ inputs.model != '' && format('--model {0} ', inputs.model) || '' }}--append-system-prompt
             "Antworte auf Deutsch. Aendere keine Dateien, committe nichts, pushe nichts. Antworte nur per Kommentar."

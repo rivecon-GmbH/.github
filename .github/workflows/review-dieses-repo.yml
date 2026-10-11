@@ -1,0 +1,20 @@
+name: Claude-Review
+
+# Review fuer Pull Requests in diesem Repo; ruft den zentralen Workflow mit vollem Pfad auf,
+# damit die Federation-Regel (job_workflow_ref) greift.
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  claude:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    uses: rivecon-GmbH/.github/.github/workflows/claude-review.yml@main
